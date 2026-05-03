@@ -93,7 +93,7 @@ def build_system_prompt(req: ChatRequest) -> str:
         summary=req.scenario.summary,
         characters=characters_text,
         chapter=gs.chapter,
-        chapter_context=gs.chpater_context,
+        chapter_context=gs.chapter_context,
         history_summary = req.history_summary,
         time_remaining=gs.time_remaining,
         food=gs.food,
