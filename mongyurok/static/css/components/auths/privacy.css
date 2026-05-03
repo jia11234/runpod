@@ -1,0 +1,162 @@
+   .doc-body {
+        padding: 60px 50px 100px;
+        max-width: 860px;
+        width: 100%;
+    }
+
+    .doc-brand {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .doc-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    .doc-intro {
+        font-size: 15px;
+        color: #848484;
+        margin-bottom: 40px;
+        line-height: 1.7;
+    }
+
+    /* 수집 항목 테이블 */
+    .privacy-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-bottom: 48px;
+    }
+
+    .privacy-table th {
+        background: #f5f0e8;
+        font-weight: 600;
+        padding: 13px 16px;
+        text-align: center;
+        border: 1px solid #d0c8be;
+        color: #1E2121;
+        white-space: nowrap;
+    }
+
+    .privacy-table td {
+        padding: 13px 16px;
+        border: 1px solid #d0c8be;
+        vertical-align: middle;
+        line-height: 1.7;
+        color: #3a3a3a;
+        font-size: 14px;
+    }
+
+    .privacy-table td:first-child {
+        text-align: center;
+        color: #848484;
+        white-space: nowrap;
+    }
+
+    .privacy-table td:nth-child(2) {
+        text-align: center;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .privacy-table tbody tr:hover td {
+        background: #fdfaf5;
+    }
+
+    /* 섹션 */
+    .section-divider {
+        border: none;
+        border-top: 1.5px solid #1E2121;
+        margin: 40px 0 24px;
+    }
+
+    .section {
+        margin-bottom: 32px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #1E2121;
+    }
+
+    .section-body {
+        font-size: 15px;
+        line-height: 1.85;
+        color: #3a3a3a;
+    }
+
+    .section-body p {
+        margin-bottom: 5px;
+    }
+
+    .section-body ul {
+        padding-left: 20px;
+        margin: 6px 0;
+    }
+
+    .section-body ul li {
+        list-style: none;
+        margin-bottom: 4px;
+        line-height: 1.8;
+    }
+
+    /* 강조 박스 */
+    .highlight-box {
+        background: #f5f0e8;
+        border-radius: 8px;
+        padding: 18px 22px;
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 1.85;
+        color: #3a3a3a;
+    }
+
+    .highlight-box strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1E2121;
+    }
+
+    /* 책임자 카드 */
+    .officer-card {
+        border: 1.5px solid #d0c8be;
+        border-radius: 8px;
+        padding: 18px 22px;
+        margin-top: 12px;
+        font-size: 15px;
+        line-height: 1.95;
+        color: #3a3a3a;
+    }
+
+    .officer-card p span {
+        font-weight: 600;
+        color: #1E2121;
+        display: inline-block;
+        width: 80px;
+    }
+
+    /* 시행일 */
+    .effective-date {
+        margin-top: 48px;
+        padding: 20px 24px;
+        background: #f5f0e8;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #848484;
+        line-height: 1.85;
+    }
+
+    .effective-date strong {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1E2121;
+        margin-bottom: 6px;
+    }

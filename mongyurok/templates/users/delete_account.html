@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}마이페이지{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/users/mypage.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/users/delete_account.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mypage-page">
+    <h1 class="mypage-title">마이페이지</h1>
+
+    <div class="mypage-card">
+        <aside class="mypage-side-menu delete-side-menu">
+            <a href="{% url 'users:mypage' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/delete_setting.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>프로필 관리</span>
+            </a>
+
+            <a href="{% url 'users:pwd_change' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/delete_key.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>비밀번호 수정</span>
+            </a>
+
+            <a href="{% url 'users:delete_account' %}" class="mypage-side-item active">
+                <img
+                    src="{% static 'images/users/delete_out.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>회원탈퇴</span>
+            </a>
+        </aside>
+
+        <div class="mypage-vertical-line"></div>
+
+        <section class="mypage-profile">
+            <h2 class="profile-title delete-title">회원탈퇴</h2>
+            <div class="profile-title-line"></div>
+
+            <form class="delete-form" method="post" id="deleteForm">
+                {% csrf_token %}
+
+                <div class="delete-area">
+                    <label for="email" class="profile-label">이메일</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="delete-input delete-email-input"
+                        value="{{ request.user.email }}"
+                        readonly
+                    >
+                </div>
+
+                <div class="delete-area">
+                    <label for="password" class="profile-label">비밀번호</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="delete-input"
+                        placeholder="현재 비밀번호를 입력해주세요"
+                    >
+
+                    {% if password_error %}
+                        <p class="delete-error-message error">{{ password_error }}</p>
+                    {% else %}
+                        <p class="delete-error-message" id="passwordError"></p>
+                    {% endif %}
+                </div>
+
+                <button
+                    type="submit"
+                    class="delete-btn disabled"
+                    id="deleteBtn"
+                    disabled
+                >
+                    탈퇴
+                </button>
+            </form>
+
+            <img
+                src="{% static 'images/users/bamboo.png' %}"
+                alt=""
+                class="mypage-bamboo"
+            >
+        </section>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteForm = document.getElementById("deleteForm");
+        const passwordInput = document.getElementById("password");
+        const deleteBtn = document.getElementById("deleteBtn");
+        const passwordError = document.getElementById("passwordError");
+
+        if (!deleteForm || !passwordInput || !deleteBtn) return;
+
+        function validateDeleteForm() {
+            const password = passwordInput.value.trim();
+
+            if (password.length > 0) {
+                deleteBtn.disabled = false;
+                deleteBtn.classList.remove("disabled");
+
+                if (passwordError) {
+                    passwordError.textContent = "";
+                    passwordError.classList.remove("error");
+                }
+            } else {
+                deleteBtn.disabled = true;
+                deleteBtn.classList.add("disabled");
+            }
+        }
+
+        passwordInput.addEventListener("input", validateDeleteForm);
+
+        deleteForm.addEventListener("submit", function (event) {
+            const password = passwordInput.value.trim();
+
+            if (password.length === 0) {
+                event.preventDefault();
+
+                if (passwordError) {
+                    passwordError.textContent = "비밀번호가 일치하지 않습니다.";
+                    passwordError.classList.add("error");
+                }
+
+                deleteBtn.disabled = true;
+                deleteBtn.classList.add("disabled");
+                return;
+            }
+
+            const isConfirmed = confirm(
+                "정말로 회원 탈퇴를 진행하시겠습니까?\n\n탈퇴 시 모든 데이터는 즉시 파기되며,\n같은 계정으로 재가입해도 복구가 불가능합니다."
+            );
+
+            if (!isConfirmed) {
+                event.preventDefault();
+            }
+        });
+
+        validateDeleteForm();
+    });
+</script>
+{% endblock %}

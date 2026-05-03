@@ -1,0 +1,141 @@
+.sidebar {
+    background-color: #1E2121;
+    width: 320px;
+    padding: 25px 0px;
+}
+
+.ham-sidebar-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    width: 20px;
+    height: 15px;
+}
+
+.sidebar-top-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height:20px;
+    font-size: 18px;
+    color: #FCFEFD;
+    margin-bottom: 35px;
+    width: 320px;
+    padding: 0px 25px;
+}
+
+.ham-sidebar-btn img{
+    width: 20px;
+
+}
+.sidebar.collapsed {
+    width: 60px;
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-top-group{
+    display: flex;
+    justify-content: center;
+    width: 60px;
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-top-group p{
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-content-menu, .sidebar.collapsed .sidebar-content-group{
+    display: none;
+}
+
+.sidebar-content-menu {
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+}
+
+
+.sidebar-content-menu .sidebar-char-menu {
+    height: 40px;
+    width: 160px;
+    background: none;
+    border: none;
+    padding: 0px;
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #FCFEFD;
+}
+
+.sidebar-content-menu .sidebar-story-menu {
+    height: 40px;
+    width: 160px;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #FCFEFD;
+}
+
+.sidebar-content-menu>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-content-menu div div{
+    height: 3px;
+    width: 160px;
+    background-color: #FCFEFD;
+}
+
+.sidebar-content-group {
+    min-height: calc(100vh - 80px);
+    margin-top: 10px;
+}
+
+.sidebar-items-group {
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-items-img {
+    width:44px;
+    height:44px;
+    background-color: white;
+    margin-right: 10px;
+}
+.sidebar-itmes-content{
+    color: #FCFEFD;
+    width: 130px;
+}
+
+.sidebar-itmes-content p:nth-child(1){
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.sidebar-itmes-content p:nth-child(2){
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.sidebar-items-group>div:nth-child(3) {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-items-group>div:nth-child(3) p {
+    margin-left: 10px;
+    margin-right: 0px;
+    color: #848484;
+}
+
+.sidebar-items-group>div:nth-child(3) img{
+    width: 7px;
+    margin-left: 5px;
+}

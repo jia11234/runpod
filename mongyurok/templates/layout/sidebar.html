@@ -1,0 +1,25 @@
+{% load static %}
+<aside class="sidebar" id="sidebar">
+    <div class = 'sidebar-top-group'>
+        <p>이전채팅</p>
+        <button class="ham-sidebar-btn" id="toggle-btn"><img src="{% static 'images/icons/ham-menu.png' %}" alt="메뉴 아이콘"></button>
+    </div>
+    <div class="sidebar-content-menu">
+        <div data-target="char">
+            <button class="sidebar-char-menu">
+                <p>독대 모드</p>
+            </button>
+            <div></div>
+        </div>
+        <div data-target="story">
+
+            <button class="sidebar-story-menu">
+                <p>역할극 모드</p>
+            </button>
+            <div></div>
+        </div>
+    </div>
+    <div class="sidebar-content-group">
+        {% include 'layout/components/history-block.html' %}
+    </div>
+</aside>

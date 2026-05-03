@@ -1,0 +1,121 @@
+.char-room-group {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.char-room-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 70px;
+}
+
+.char-room-message>div {
+    width: 710px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.input-container {
+    width: 710px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #bfbfbf;
+    border-radius: 10px;
+    padding: 8px 16px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+#chat-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 8px 0;
+    background: transparent;
+}
+
+#send-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.char-count {
+    position: absolute;
+    top: 55px;
+    font-size: 13px;
+    color: #848484;
+    right: 0px;
+}
+
+.input-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.char-room-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 510px;
+    background-color: #1E2121;
+}
+
+
+.char-img-wrap {
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.char-img-wrap img {
+    width: 200px;
+    height: 200px;
+    margin-top: -20px;
+}
+
+.char-box-group {
+    display: flex;
+}
+
+.char-room-profile-img {
+    margin-top: 70px;
+    width: 270px;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.char-room-profile-img img {
+    width: 270px;
+    height: 392px;
+    margin-top: 0px;
+}
+
+.char-room-profile {
+    color: #fff;
+}

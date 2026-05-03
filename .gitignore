@@ -1,0 +1,36 @@
+# ── 환경변수 ──
+.env
+.env.*
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Django ──
+*.log
+db.sqlite3
+dream_db
+
+# ── 가상환경 ──
+venv/
+env/
+.venv/
+envs/
+nlp_practice/
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Docker ──
+.dockerignore

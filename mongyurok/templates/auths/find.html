@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}비밀번호 찾기{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/auths/find.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="password-find-page">
+    <div class="password-find-box">
+        <h1 class="password-find-title">비밀번호 찾기</h1>
+
+        <form class="password-find-form" method="post">
+            {% csrf_token %}
+
+            <div class="password-find-field">
+                <label for="email_id">이메일</label>
+
+                <div class="email-row">
+                    <input
+                        type="text"
+                        id="email_id"
+                        name="email_id"
+                        class="email-id-input"
+                        placeholder="예: logogogogo"
+                    >
+
+                    <span class="email-at">@</span>
+
+                    <select name="email_domain" class="email-domain-select">
+                        <option value="">선택하기</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                    </select>
+
+                    <button type="button" class="send-code-button">
+                        인증번호 전송
+                    </button>
+                </div>
+            </div>
+
+            <div class="password-find-field">
+                <label for="auth_code">인증번호</label>
+
+                <div class="code-row">
+                    <input
+                        type="text"
+                        id="auth_code"
+                        name="auth_code"
+                        class="code-input"
+                        placeholder="인증번호를 입력해주세요"
+                    >
+
+                    <button type="button" class="check-code-button">
+                        인증번호 확인
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="next-button">
+                다음
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

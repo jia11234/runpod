@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}로그인 | 몽유록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/auths/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-box">
+        <h2 class="auth-title">로그인</h2>
+
+        <form method="post" action="{% url 'auths:login' %}" class="auth-form">
+            {% csrf_token %}
+
+            <input 
+                type="text"
+                name="username"
+                class="auth-input"
+                placeholder="이메일을 입력해주세요"
+            >
+
+            <input 
+                type="password"
+                name="password"
+                class="auth-input"
+                placeholder="비밀번호를 입력해주세요"
+            >
+
+            {% if form.errors %}
+                <div class="auth-error">
+                    아이디 또는 비밀번호가 올바르지 않습니다.
+                </div>
+            {% endif %}
+
+
+            <div class="password-find">
+                <a href="#">비밀번호 찾기</a>
+            </div>
+
+            <button type="submit" class="login-btn">로그인</button>
+
+            <a href="{% url 'auths:sign' %}" class="signup-btn">
+                회원가입
+            </a>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,511 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}회원가입 | 몽유록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/auths/sign_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="signup-page">
+    <div class="signup-box">
+        <h2 class="signup-title">회원가입</h2>
+
+        <form method="post" class="signup-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <p class="required-guide">
+                <span>*</span>표시는 반드시 입력하여야 하는 항목입니다.
+            </p>
+
+            <div class="signup-field">
+                <label for="email_id">
+                    이메일<span>*</span>
+                </label>
+
+                <div class="email-row">
+                    <input
+                        type="text"
+                        id="email_id"
+                        name="email_id"
+                        class="email-id-input"
+                        placeholder="예: logogogogo"
+                    >
+
+                    <span class="email-at">@</span>
+
+                    <select
+                        id="email_domain"
+                        name="email_domain"
+                        class="email-domain-select"
+                    >
+                        <option value="">선택하기</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                    </select>
+
+                    <button type="button" class="send-code-button" disabled>
+                        인증번호 전송
+                    </button>
+                </div>
+                <p class="signup-error-email"></p>
+            </div>
+
+            <div class="signup-field">
+                <label for="auth_code">
+                    인증번호<span>*</span>
+                </label>
+
+                <div class="code-row">
+                    <div>
+                        <input
+                            type="text"
+                            id="auth_code"
+                            name="auth_code"
+                            maxlength="6"
+                            class="code-input"
+                            placeholder="인증번호를 입력해주세요"
+                        >
+                        <p class="timer"></p>
+                    </div>
+                    <button type="button" class="check-code-button" disabled>
+                        인증번호 확인
+                    </button>
+                </div>
+                <p class="signup-error-code"></p>
+            </div>
+
+            <div class="signup-field">
+                <label for="password">
+                    비밀번호<span>*</span>
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="signup-input"
+                    placeholder="비밀번호를 입력해주세요"
+                >
+                <p class="signup-error-pwd"></p>
+            </div>
+
+            <div class="signup-field">
+                <label for="password_confirm">
+                    비밀번호 확인<span>*</span>
+                </label>
+
+                <input
+                    type="password"
+                    id="password_confirm"
+                    name="password_confirm"
+                    class="signup-input"
+                    placeholder="비밀번호를 재입력해주세요"
+                >
+                <p class="signup-error-pwd-c"></p>
+            </div>
+
+            <div class="signup-field">
+                <label for="nickname">
+                    닉네임<span>*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="nickname"
+                    name="nickname"
+                    class="signup-input"
+                    placeholder="닉네임을 입력해주세요"
+                >
+                <p class="signup-error-nickname"></p>
+            </div>
+
+            <div class="profile-field">
+                <p class="profile-title">프로필(선택)</p>
+
+                <div class="profile-row">
+                    <div class="profile-preview">
+                        <img
+                            src="{% static '/images/profile_default.png' %}"
+                            alt="기본 프로필 이미지"
+                            class="profile-image"
+                        >
+                    </div>
+
+                    <div class="profile-upload">
+                        <p>나를 대표하는 이미지를 업로드 해주세요!</p>
+                        <p class="signup-error-profile">&nbsp;</p>
+                        <label for="profile_image" class="profile-upload-button">
+                            사진등록
+                        </label>
+
+                        <input
+                            type="file"
+                            id="profile_image"
+                            name="profile_image"
+                            accept="image/*"
+                            class="profile-file-input"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="signup-submit-button">
+                회원가입
+            </button>
+
+            <p class="login-guide">
+                이미 계정이 있으신가요?
+                <a href="{% url 'auths:login' %}">로그인</a>
+            </p>
+        </form>
+    </div>
+</section>
+<script>
+    const sendBtn = document.querySelector('.send-code-button');
+    const submitBtn = document.querySelector('.signup-submit-button');
+    const checkBtn = document.querySelector('.check-code-button');
+    const emailInput = document.querySelector('#email_id');
+    const pwdInput = document.querySelector('#password')
+    const emailDomain = document.querySelector('#email_domain');
+    const authCode = document.querySelector('#auth_code');
+    const pwdConfirmInput = document.querySelector('#password_confirm');
+    const nicknameInput = document.querySelector('#nickname');
+    const profileInput = document.querySelector('#profile_image');
+    const profilePreview = document.querySelector('.profile-image');
+
+    /* 상태 변수들 */
+    let emailSend = false;
+    let codeTrue = false;
+    let timer;
+    let password = false;
+    let password_c = false;
+    let nickname = false;
+    
+    /* 타이머 */
+    function startTimer() {
+        let timeLeft = 180;
+        const timerDisplay = document.querySelector('.timer');
+        
+        clearInterval(timer);
+
+        timer = setInterval(function() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerDisplay.textContent = " ";
+                emailSend = false;
+                ConfirmButtonState();
+            }
+            timeLeft--;
+        }, 1000);
+    }
+    /* 인증번호 전송 버튼 함수 */
+    function updateButtonState() {
+        const isEmailFilled = emailInput.value.trim().length > 0;
+        
+        const isDomainSelected = emailDomain.value !== "";
+        
+        if (isEmailFilled && isDomainSelected) {
+            sendBtn.classList.add('active'); 
+            sendBtn.disabled = false;    
+        } else {
+            sendBtn.classList.remove('active');
+            sendBtn.disabled = true;      
+        }
+    }
+
+    sendBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const email_id = emailInput.value;
+        const email_domain = emailDomain.value;
+        fetch("{% url 'auths:send_code' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'email_id': email_id,
+                'email_domain': email_domain
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const errorText = document.querySelector('.signup-error-email');
+            if (data.status === 'success') {
+                errorText.textContent = data.message;
+                errorText.classList.remove('error'); 
+                errorText.classList.add('success');
+                startTimer()
+                emailSend = true;
+                ConfirmButtonState();
+            } else {
+                errorText.textContent = data.message;
+                errorText.classList.remove('success');
+                errorText.classList.add('error');
+                emailSend = false;
+            }
+                setTimeout(() => {
+                errorText.textContent = "";
+            }, 3000);
+        })
+    });
+
+    /* 인증번호 확인 함수 */
+    function ConfirmButtonState() {
+        const email_id = emailInput.value;
+        const email_domain = emailDomain.value;
+        const isCodeFilled = authCode.value.trim().length === 6;
+        const isEmailFilled = emailInput.value.trim().length > 0;
+        
+        
+        const isDomainSelected = emailDomain.value !== "";
+
+        /* 이메일을 다 작성해야지 인증번호를 보낼 수 있게 */
+        if (isCodeFilled && isEmailFilled && isDomainSelected && emailSend === true) {
+            checkBtn.classList.add('active'); 
+            checkBtn.disabled = false;    
+        } else {
+            checkBtn.classList.remove('active');
+            checkBtn.disabled = true;      
+        }
+    }
+
+    emailInput.addEventListener('input', updateButtonState);
+    emailDomain.addEventListener('change', updateButtonState);
+    authCode.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        ConfirmButtonState();
+    });
+
+    checkBtn.addEventListener('click', function() {
+        const code = authCode.value;
+        const email_id = emailInput.value;
+        const email_domain = emailDomain.value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch("{% url 'auths:code_confirm' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'email_id': email_id,
+                'email_domain': email_domain,
+                'code': code
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const errorText = document.querySelector('.signup-error-code');
+            if (data.status === 'success') {
+                codeTrue = true;
+                errorText.textContent = data.message;
+                errorText.classList.remove('error'); 
+                errorText.classList.add('success');
+                signFormSubmitBtn();
+            } else {
+                codeTrue = false;
+                errorText.textContent = data.message;
+                errorText.classList.remove('success');
+                errorText.classList.add('error')
+                signFormSubmitBtn();
+            }
+            setTimeout(() => {
+                errorText.textContent = "";
+            }, 3000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('서버와 통신 중 오류가 발생했습니다.');
+        });
+    });
+
+    /* 비밀번호 확인 함수 */
+    function pwdStated() {
+        const pwdValue = pwdInput.value;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=(?:.*[0-9]){2,})(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]).{8,16}$/;
+        const errorText = document.querySelector('.signup-error-pwd');
+        if (!passwordRegex.test(pwdValue)) {
+            password = false;
+            errorText.textContent = "8~16자 대소문자, 숫자 2개, 특수문자 포함 필수입니다";
+            errorText.classList.remove('success');
+            errorText.classList.add('error');
+            errorText.style.display = 'block';
+            signFormSubmitBtn();
+        }
+        else {
+            password = true;
+            errorText.textContent = "안전한 비밀번호입니다";
+            errorText.classList.remove('error');
+            errorText.classList.add('success');
+            errorText.style.display = 'block';
+            signFormSubmitBtn();
+
+            setTimeout(() => {
+                errorText.style.display = 'none';
+            }, 3000);
+        }
+    }
+    pwdInput.addEventListener('input', pwdStated);
+
+    /* 비밀번호 재확인 함수 */
+    function pwdConfirm() {
+        const pwdConfrimValue = pwdConfirmInput.value;
+        const pwdValue = pwdInput.value;
+        const errorText = document.querySelector('.signup-error-pwd-c');
+        if (pwdConfrimValue === '') {
+            password_c = false;
+            errorText.textContent = "";
+            errorText.style.display = 'none';
+            return;
+        }
+        if (pwdValue === ''){
+            password_c = false;
+            errorText.textContent = "비밀번호를 입력해주세요";
+            signFormSubmitBtn();
+        } else {
+            if (pwdConfrimValue===pwdValue) {
+                password_c = true;
+                errorText.textContent = "비밀번호가 일치합니다";
+                errorText.classList.remove('error');
+                errorText.classList.add('success');
+                errorText.style.display = 'block';
+                signFormSubmitBtn();
+                setTimeout(() => {
+                    errorText.textContent = " ";
+            },  3000);
+        return;
+            }
+            else {
+                password_c = false;
+                errorText.textContent = "비밀번호가 일치하지 않습니다";
+                errorText.classList.remove('success');
+                errorText.classList.add('error');
+                errorText.style.display = 'block';
+                signFormSubmitBtn();
+
+            }
+        }
+        
+    }
+    pwdInput.addEventListener('input', () => {
+    pwdConfirm(); 
+    });
+    pwdConfirmInput.addEventListener('input', pwdConfirm);
+
+    /* 닉네임 */
+    function nicknameState() {
+        const nicknameValue = nicknameInput.value;
+        const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
+        const errorText = document.querySelector('.signup-error-nickname');
+
+        if (nicknameRegex.test(nicknameValue)) {
+            nickname = true;
+            errorText.textContent = "사용가능한 닉네임입니다";
+            errorText.classList.remove('error');
+            errorText.classList.add('success');
+            errorText.style.display = 'block';
+            signFormSubmitBtn();
+        }
+        else {
+            nickname = false;
+            errorText.textContent = "2~12자 이내로 작성해주세요 (이모지, 특수문자 제외)";
+            errorText.classList.remove('success');
+            errorText.classList.add('error');
+            errorText.style.display = 'block';
+            signFormSubmitBtn();
+
+        }
+        setTimeout(() => {
+                errorText.textContent = " ";
+            }, 3000);
+        return;
+    }
+    nicknameInput.addEventListener('input', nicknameState);
+
+    /* 프로필 */
+    profileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    const maxSize = 2 * 1024 * 1024;
+    const errorText = document.querySelector('.signup-error-profile');
+    if (file) {
+        if (file.size > maxSize) {
+            errorText.textContent = "파일 용량 2MB를 초과할 수 없습니다";
+            errorText.classList.add('error');
+            errorText.style.display = 'block';
+            this.value = "";
+            profilePreview.src = "{% static '/images/profile_default.png' %}";
+            setTimeout(() => {
+                errorText.textContent = " ";
+            }, 3000);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => profilePreview.src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+    });
+
+   /* 인증번호 전송 버튼 함수  */
+    function signFormSubmitBtn() {
+        console.log({ emailSend, codeTrue, password, password_c, nickname });
+        if ( emailSend && codeTrue && password && password_c && nickname ) {
+            submitBtn.classList.add('active'); 
+            submitBtn.disabled = false;    
+        } else {
+            submitBtn.classList.remove('active');
+            submitBtn.disabled = true;      
+        }
+    }
+
+    /* 회원 가입 제출 버튼 */
+    submitBtn.addEventListener('click', async function(e) {
+    e.preventDefault(); 
+    const submitData = new FormData();
+    
+    submitData.append('email_id', emailInput.value);
+    submitData.append('email_domain', emailDomain.value);
+    submitData.append('password', pwdInput.value);
+    submitData.append('nickname', nicknameInput.value);
+    
+    if (profileInput.files[0]) {
+        submitData.append('profile_image', profileInput.files[0]);
+    }
+
+    submitData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+    try {
+        const response = await fetch("{% url 'auths:sign_up' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' 
+            },
+            body: submitData
+        });
+         console.log(submitData)
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("회원가입에 성공했습니다! 🎉");
+            window.location.href = "{% url 'auths:login' %}";
+        } else {
+            alert("회원가입 실패: " + result.message);
+        }
+    } catch (error) {
+        console.error("에러 발생:", error);
+        alert("서버 통신 중 오류가 발생했습니다.");
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}역할극 모드 — 몽유록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/scenarios/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="main-story">
+    <img src="{% static 'images/character/main-story-banner.png' %}" alt="역할극 모드 배너">
+
+    <div class="main-story-content-group">
+        <p>역할극 모드</p>
+        <p>조선시대 시나리오와 함께 여러명과 대화해보세요</p>
+
+        <div class="card-container">
+            {% for scene in scene_list %}
+            <div class="story-card"
+                {% if scene.img_url and scene.img_url.name %}
+                    style="background-image: url('{{ scene.img_url.url }}');"
+                {% else %}
+                    style="background-image: url('{% static 'images/story_card.png' %}');"
+                {% endif %}
+                 onclick="openModal({{ scene.id }})">
+                <div>
+                    <p>{{ scene.title }}</p>
+                    <p>{{ scene.keyword1|default:"" }}</p>
+                    <p>{{ scene.keyword2|default:"" }}</p>
+                    <p>
+                        {% if scene.keyword1 %}# {{ scene.keyword1 }}{% endif %}
+                        {% if scene.keyword2 %}&nbsp; # {{ scene.keyword2 }}{% endif %}
+                        {% if scene.keyword3 %}&nbsp; # {{ scene.keyword3 }}{% endif %}
+                    </p>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: #848484; grid-column: 1 / -1;">등록된 시나리오가 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── 이야기 상세보기 모달 ── -->
+<div class="modal-backdrop" id="scene-modal">
+    <div class="scene-modal">
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+
+        <!-- 3-2 대표 이미지 -->
+        <img class="modal-banner" id="modal-banner" src="" alt=""
+             onerror="this.style.display='none'; document.getElementById('modal-banner-fallback').style.display='block'">
+        <div class="modal-banner-placeholder" id="modal-banner-fallback" style="display:none;"></div>
+
+        <div class="modal-body">
+            <!-- 3-3 이야기 소개 -->
+            <p class="modal-scene-title" id="modal-title"></p>
+            <p class="modal-scene-summary" id="modal-summary"></p>
+
+            <!-- 3-4 캐릭터 목록 -->
+            <p class="modal-section-title">캐릭터</p>
+            <div class="modal-char-list" id="modal-chars"></div>
+
+            <!-- 3-5 엑스트라 목록 -->
+            <div id="modal-extra-section" style="display:none;">
+                <hr class="modal-divider">
+                <p class="modal-section-title">엑스트라</p>
+                <div class="modal-extra-list" id="modal-extras"></div>
+            </div>
+
+            <!-- 3-6 대화 시작 버튼 -->
+            <a id="modal-start-link" href="#">
+                <button class="modal-start-btn">대화 시작</button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ── 모달 열기 ──
+function openModal(sceneId) {
+    fetch(`/scenarios/${sceneId}/`)
+        .then(r => r.json())
+        .then(data => {
+            // 대표 이미지
+            const banner = document.getElementById('modal-banner');
+            const fallback = document.getElementById('modal-banner-fallback');
+            if (data.banner_url) {
+                banner.src = data.banner_url;
+                banner.style.display = 'block';
+                fallback.style.display = 'none';
+            } else {
+                banner.style.display = 'none';
+                fallback.style.display = 'block';
+            }
+
+            // 이야기 소개
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-summary').textContent = data.summary;
+
+            // 캐릭터 (is_extra=false)
+            const charContainer = document.getElementById('modal-chars');
+            charContainer.innerHTML = '';
+            const mainChars = data.characters.filter(c => c.role === '메인 캐릭터');
+            mainChars.forEach(ch => {
+                charContainer.innerHTML += `
+                <div class="modal-char-item">
+                    <img class="modal-char-img"
+                         src="${ch.img_url || ''}"
+                         onerror="this.style.background='#333'; this.removeAttribute('src')"
+                         alt="${ch.name}">
+                    <div class="modal-char-info">
+                        <p class="modal-char-name">${ch.name}</p>
+                        <p class="modal-char-keyword">${ch.keyword || ''}</p>
+                        <p class="modal-char-summary">${ch.summary || ''}</p>
+                    </div>
+                </div>`;
+            });
+
+            // 엑스트라 (is_extra=true)
+            const extras = data.characters.filter(c => c.role === '엑스트라');
+            const extraSection = document.getElementById('modal-extra-section');
+            const extraContainer = document.getElementById('modal-extras');
+            if (extras.length > 0) {
+                extraContainer.innerHTML = '';
+                extras.forEach(ex => {
+                    extraContainer.innerHTML += `<span class="modal-extra-tag">${ex.name}</span>`;
+                });
+                extraSection.style.display = 'block';
+            } else {
+                extraSection.style.display = 'none';
+            }
+
+            // 대화 시작 버튼 링크 — 로그인 여부는 서버에서 처리
+            document.getElementById('modal-start-link').href = `/scenarios/${sceneId}/chats/`;
+
+            document.getElementById('scene-modal').classList.add('open');
+        })
+        .catch(() => alert('정보를 불러오지 못했습니다.'));
+}
+
+function closeModal() {
+    document.getElementById('scene-modal').classList.remove('open');
+}
+
+// 모달 외부 클릭 시 닫기
+document.getElementById('scene-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+// ESC 키
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
+{% endblock %}

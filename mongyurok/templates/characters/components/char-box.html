@@ -1,0 +1,10 @@
+{% load static %}
+<div class="char-box-group">
+    <div class="char-img-wrap">
+        <img src="{% static 'images/character/char-card1.png' %}" alt="">
+    </div>
+    <div class="char-box-mes">
+        <p>{{ room.character.kor_name }}</p>
+        <div>{{ msg.content }}</div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{% load static %}
+<div class="char-box-group user-msg">
+    <div class="char-box-mes">
+        <p class="user-nickname">{{ user.nickname }}</p>
+        <div class="user-bubble">{{ msg.content }}</div>
+    </div>
+    <div class="char-img-wrap">
+        <img src="{% static 'images/character/char-card1.png' %}" alt="user-profile">
+    </div>
+</div>

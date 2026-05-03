@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}독대 모드 — 몽유록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/characters/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="main-char">
+    <img src="{% static 'images/character/main-char-banner.png' %}" alt="독대 모드 배너">
+
+    <div class="main-char-content-group">
+        <p>독대 모드</p>
+        <p>조선왕과 자유롭게 채팅을 나눠보세요</p>
+
+        <div class="card-container">
+            {% for char in characters %}
+            <div class="char-card"
+                 {% if char.img_url and char.img_url.name %}
+                     style="background-image: url('{{ char.img_url.url }}');"
+                 {% else %}
+                     style="background-image: url('{% static 'images/character/char-card1.png' %}');"
+                 {% endif %}
+                 onclick="openModal({{ char.id }})">
+                <div>
+                    <p>{{ char.kor_name }} ({{ char.hanja_name }})</p>
+                    <p>{{ char.birth_to_death }}</p>
+                    <p>
+                        {% if char.keyword1 %}# {{ char.keyword1 }}{% endif %}
+                        {% if char.keyword2 %} &nbsp; # {{ char.keyword2 }}{% endif %}
+                    </p>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: #848484; grid-column: 1/-1;">등록된 캐릭터가 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 캐릭터 상세 모달 -->
+<div class="modal-backdrop" id="char-modal">
+    <div class="char-modal">
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+
+        <img class="modal-char-banner" id="modal-banner" src="" alt=""
+             onerror="this.style.display='none'; document.getElementById('modal-banner-fallback').style.display='flex'">
+        <div class="modal-char-banner-placeholder" id="modal-banner-fallback" style="display:none;">
+            이미지 없음
+        </div>
+
+        <div class="modal-body">
+            <p class="modal-char-name" id="modal-name"></p>
+            <p class="modal-char-period" id="modal-period"></p>
+            <div class="modal-char-keywords" id="modal-keywords"></div>
+            <p class="modal-char-summary" id="modal-summary"></p>
+
+            <button class="modal-start-btn" id="start-btn" onclick="startChat()">
+                대화 시작
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 로그인 여부를 JS에 전달 -->
+<script>
+    const IS_AUTHENTICATED = {{ request.user.is_authenticated|yesno:"true,false" }};
+    const LOGIN_URL = "{% url 'auths:login' %}";
+    const CSRF = '{{ csrf_token }}';
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentCharId = null;
+
+function openModal(charId) {
+    currentCharId = charId;
+
+    fetch(`/characters/${charId}/detail/`)
+        .then(r => r.json())
+        .then(data => {
+            const banner   = document.getElementById('modal-banner');
+            const fallback = document.getElementById('modal-banner-fallback');
+
+            if (data.img_url) {
+                banner.src = data.img_url;
+                banner.style.display = 'block';
+                fallback.style.display = 'none';
+            } else {
+                banner.style.display = 'none';
+                fallback.style.display = 'flex';
+            }
+
+            document.getElementById('modal-name').textContent =
+                `${data.kor_name} (${data.hanja_name})`;
+            document.getElementById('modal-period').textContent = data.birth_to_death;
+
+            const kc = document.getElementById('modal-keywords');
+            kc.innerHTML = '';
+            data.keywords.forEach(kw => {
+                kc.innerHTML += `<span class="modal-keyword-tag"># ${kw}</span>`;
+            });
+
+            document.getElementById('modal-summary').textContent = data.summary;
+            document.getElementById('char-modal').classList.add('open');
+        })
+        .catch(() => alert('캐릭터 정보를 불러오지 못했습니다.'));
+}
+
+function closeModal() {
+    document.getElementById('char-modal').classList.remove('open');
+}
+
+function startChat() {
+    // ✅ 비로그인이면 로그인 페이지로 이동
+    if (!IS_AUTHENTICATED) {
+        location.href = `${LOGIN_URL}?next=/characters/${currentCharId}/persona/`;
+        return;
+    }
+
+    const btn = document.getElementById('start-btn');
+    btn.disabled = true;
+    btn.textContent = '시작 중...';
+
+    // 페르소나는 채팅 화면에서 설정 → 기본값으로 방만 생성
+    const fd = new FormData();
+    fd.append('csrfmiddlewaretoken', CSRF);
+    fd.append('identity', 'farmer');
+    fd.append('personality', '');
+    fd.append('values', '');
+    fd.append('first_scene', '');
+
+    fetch(`/characters/${currentCharId}/persona/`, {
+        method: 'POST',
+        body: fd
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.href = data.room_url;
+        } else {
+            alert(data.message || '오류가 발생했습니다.');
+            btn.disabled = false;
+            btn.textContent = '대화 시작';
+        }
+    })
+    .catch(() => {
+        alert('통신 오류가 발생했습니다.');
+        btn.disabled = false;
+        btn.textContent = '대화 시작';
+    });
+}
+
+document.getElementById('char-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
+{% endblock %}

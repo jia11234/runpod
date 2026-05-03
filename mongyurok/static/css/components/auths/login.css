@@ -1,0 +1,132 @@
+.auth-page {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    background-color: #FFF8F0;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding-top: 140px;
+    box-sizing: border-box;
+
+    height: calc(100vh - 70px);
+}
+
+.auth-box {
+    width: 340px;
+    height: 353px;
+    text-align: center;
+}
+
+.auth-title {
+    width: 340px;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38px;
+    color: #1E2121;
+
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+}
+
+.auth-input {
+    width: 340px;
+    height: 54px;
+
+    border: 1px solid #BFBFBF;
+    border-radius: 5px;
+    background-color: #FFF8F0;
+
+    padding: 0 14px;
+    margin: 0;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 54px;
+
+    box-sizing: border-box;
+    color: #848484;
+}
+
+.auth-input + .auth-input {
+    margin-top: 10px;
+}
+
+.auth-input::placeholder {
+    color: #848484;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.password-find {
+    width: 340px;
+    height: 16px;
+
+    text-align: right;
+    line-height: 16px;
+
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.password-find a {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1E2121;
+    text-decoration: none;
+}
+
+.login-btn {
+    width: 340px;
+    height: 54px;
+
+    border: none;
+    border-radius: 5px;
+    background-color: #315057;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FDFCF8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.signup-btn {
+    width: 340px;
+    height: 54px;
+
+    border: 1px solid #315057;
+    border-radius: 5px;
+    background-color: transparent;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #315057;
+    text-decoration: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+    cursor: pointer;
+}

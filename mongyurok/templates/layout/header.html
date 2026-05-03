@@ -1,0 +1,46 @@
+{% load static %}
+<header>
+    <div class="header-left">
+        <a href="{% url 'characters:main' %}" class="logo">몽유록</a>
+        <nav>
+            <a href="{% url 'characters:main' %}"
+               class="nav-link {% if request.resolver_match.view_name == 'characters:main' %}active{% endif %}">독대 모드</a>
+            <a href="{% url 'scenarios:main_scenarios' %}"
+               class="nav-link {% if request.resolver_match.view_name == 'scenarios:main_scenarios' %}active{% endif %}">스토리 모드</a>
+            <a href="#">이미지</a>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <div class="search-box">
+            <input type="text" class="search-input">
+            <img src="{% static 'images/icons/search.png' %}" alt="">
+        </div>
+
+        <div class="login-box">
+            <div class="header-profile">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'auths:login' %}">
+                        <p>로그인</p>
+                    </a>
+                {% else %}
+                    <a href="{% url 'users:mypage' %}">
+                        {% if user.img_url and user.img_url.name %}
+                            <img src="{{ user.img_url.url }}" alt="내 프로필">
+                        {% else %}
+                            <img src="{% static 'images/users/profile.png' %}" alt="기본 프로필">
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="header-hover">
+                <a href="{% url 'users:mypage' %}">마이페이지</a>
+                <a href="{% url 'auths:logout' %}">로그아웃</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</header>

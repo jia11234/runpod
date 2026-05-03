@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}이용약관 동의{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/auths/sign.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="sign-page">
+    <div class="sign-box">
+        <h1 class="sign-title">계정 이용약관 동의</h1>
+
+        <form class="sign-form" action="{% url 'auths:sign_form' %}" method="post">
+            {% csrf_token %}
+
+            <div class="terms-list">
+                <div class="terms-row">
+                    <label class="terms-label" for="agree_all">
+                        <input
+                            type="checkbox"
+                            id="agree_all"
+                            name="agree_all"
+                            class="terms-checkbox"
+                        >
+                        <span class="all-check"></span>
+                        <span class="terms-text">약관 전체 동의하기</span>
+                    </label>
+                </div>
+
+                <div class="terms-row">
+                    <label class="terms-label" for="agree_terms">
+                        <input
+                            type="checkbox"
+                            id="agree_terms"
+                            name="agree_terms"
+                            class="terms-checkbox"
+                            required
+                        >
+                        <span class="one-check"></span>
+                        <span class="terms-text item-check">이용약관 동의</span>
+                    </label>
+
+                    <a href="{% url 'auths:terms' %}" class="terms-link">
+                        <span class="terms-link-text">약관보기</span>
+                        <img
+                            src="{% static 'images/icons/sign_click.png' %}"
+                            alt=""
+                            class="terms-link-icon"
+                        >
+                    </a>
+                </div>
+
+                <div class="terms-row">
+                    <label class="terms-label" for="agree_privacy">
+                        <input
+                            type="checkbox"
+                            id="agree_privacy"
+                            name="agree_privacy"
+                            class="terms-checkbox"
+                            required
+                        >
+                        <span class="two-check"></span>
+                        <span class="terms-text">개인정보 수집 및 이용 동의</span>
+                    </label>
+
+                    <a href="{% url 'auths:privacy' %}" class="terms-link">
+                        <span class="terms-link-text">약관보기</span>
+                        <img
+                            src="{% static 'images/icons/sign_click.png' %}"
+                            alt=""
+                            class="terms-link-icon"
+                        >
+                    </a>
+                </div>
+            </div>
+
+            <button type="submit" class="sign-next-button" disabled>
+                다음
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const allCheck = document.querySelector('.all-check');
+    const one = document.querySelector('.one-check');
+    const two = document.querySelector('.two-check');
+    const nextBtn = document.querySelector('.sign-next-button');
+
+    function updateButtonState() {
+        const isBothChecked = one.classList.contains('active') && two.classList.contains('active');
+        
+        if (isBothChecked) {
+            nextBtn.classList.add('active'); 
+            nextBtn.disabled = false;    
+            nextBtn.onclick = function() {
+                location.href = "{% url 'auths:sign_form' %}";
+            };
+        } else {
+            nextBtn.classList.remove('active');
+            nextBtn.disabled = true;      
+        }
+    }
+ 
+    allCheck.addEventListener('click', function() {
+        const isNowActive = this.classList.toggle('active');
+        
+        if (isNowActive) {
+            one.classList.add('active');
+            two.classList.add('active');
+        } else {
+            one.classList.remove('active');
+            two.classList.remove('active');
+        }
+        updateButtonState();
+    });
+
+    [one, two].forEach(item => {
+        item.addEventListener('click', function() {
+            this.classList.toggle('active');
+            if (one.classList.contains('active') && two.classList.contains('active')) {
+                allCheck.classList.add('active');
+            } else {
+                allCheck.classList.remove('active');
+            }
+            updateButtonState();
+        });
+        updateButtonState();
+    }); 
+</script>
+{% endblock %}

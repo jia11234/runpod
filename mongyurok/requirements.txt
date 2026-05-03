@@ -1,0 +1,28 @@
+# Django 핵심
+Django==6.0.4
+asgiref
+
+# 서버
+gunicorn==25.3.0
+
+# DB
+mysqlclient==2.2.8
+
+# HTTP 클라이언트 (FastAPI 호출용)
+httpx==0.28.1
+
+# 환경변수
+python-dotenv==1.2.2
+
+# 이메일 (auths에서 사용)
+dnspython==2.8.0
+email-validator==2.3.0
+
+# 이미지 업로드 (Pillow, ImageField 사용 중)
+pillow==12.2.0
+
+# 기타 Django 의존성 (자동 설치되지만 명시)
+sqlparse==0.5.5
+pytz==2026.1.post1
+typing_extensions==4.15.0
+urllib3==2.6.3

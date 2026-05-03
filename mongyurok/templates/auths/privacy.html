@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}개인정보처리방침 — 몽유록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/auths/privacy.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="doc-body">
+
+    <p class="doc-brand">몽유록</p>
+    <h1 class="doc-title">개인정보처리방침</h1>
+    <p class="doc-intro">
+        몽유록은 이용자의 개인정보를 소중하게 생각하며, 『개인정보 보호법』 등 관련 법령을 준수하고 있습니다.
+    </p>
+
+    <!-- 수집 항목 테이블 -->
+    <table class="privacy-table">
+        <thead>
+            <tr>
+                <th>분류</th>
+                <th>서비스명</th>
+                <th>수집 및 이용 목적</th>
+                <th>수집하는 개인정보 항목</th>
+                <th>보유 및 이용기간</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>회원가입 및 기본 서비스</strong></td>
+                <td>회원 식별, 로그인, 서비스 이용 제공, 문의 및 민원 처리</td>
+                <td>이메일, 비밀번호, 닉네임</td>
+                <td>회원 탈퇴 시까지</td>
+            </tr>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>캐릭터 챗봇 서비스</strong></td>
+                <td>사용자 맞춤 캐릭터 대화 제공, 대화 내용 기반 응답 생성 및 품질 개선</td>
+                <td>사용자 입력 텍스트(대화 내용),<br>캐릭터 설정 정보(성격, 신분, 가치관 등)</td>
+                <td>회원 탈퇴 시까지 또는<br>대화 삭제 시까지</td>
+            </tr>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>대화 이력 관리</strong></td>
+                <td>이전 대화 조회, 이야기 기록 제공</td>
+                <td>대화 로그, 생성된 이미지,<br>캐릭터 설정 정보</td>
+                <td>사용자가 삭제 시 즉시 삭제</td>
+            </tr>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>이미지 생성 서비스</strong></td>
+                <td>캐릭터 기반 이미지 생성 및 제공</td>
+                <td>생성된 이미지 데이터,<br>생성 요청 텍스트</td>
+                <td>생성 후 저장 시까지 /<br>삭제 시 즉시 삭제</td>
+            </tr>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>서비스 운영 및 보안</strong></td>
+                <td>부정 이용 방지, 비정상 접근 탐지,<br>서비스 안정성 확보</td>
+                <td>IP 주소, 접속 로그, 기기 정보</td>
+                <td>최대 6개월</td>
+            </tr>
+            <tr>
+                <td>공통 및 일반</td>
+                <td><strong>계정 보안 및 중복 가입 방지</strong></td>
+                <td>동일 사용자 식별 및 부정 가입 방지</td>
+                <td>이메일</td>
+                <td>회원 탈퇴 후 7일</td>
+            </tr>
+            <tr>
+                <td>선택</td>
+                <td><strong>마케팅 및 서비스 개선</strong></td>
+                <td>서비스 개선, 신규 기능 안내,<br>사용자 경험 분석</td>
+                <td>이용 기록, 접속 로그</td>
+                <td>동의 철회 시까지</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 1. 처리 목적 -->
+    <hr class="section-divider">
+
+    <div class="section">
+        <p class="section-title">1. 개인정보의 처리 목적</p>
+        <div class="section-body">
+            <p>몽유록은 다음의 목적을 위하여 개인정보를 처리합니다. 처리한 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경될 시에는 사전 동의를 구할 예정입니다.</p>
+            <ul>
+                <li>- 회원 가입 및 관리: 회원 식별, 서비스 이용 자격 확인, 불량 회원 제재</li>
+                <li>- 서비스 제공: 캐릭터 챗봇, 이미지 생성, 대화 이력 관리 등 서비스 운영</li>
+                <li>- 서비스 개선 및 신규 서비스 개발</li>
+                <li>- 부정 이용 방지 및 서비스 보안 유지</li>
+                <li>- 법령 상 의무 이행 및 분쟁 해결</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 2. 보유기간 -->
+    <div class="section">
+        <p class="section-title">2. 개인정보의 처리 및 보유기간</p>
+        <div class="section-body">
+            <p>몽유록은 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 동의받은 보유·이용기간 내에서 개인정보를 처리·보유합니다. 각 항목별 보유기간은 위 표를 참고하시기 바랍니다.</p>
+            <div class="highlight-box">
+                <strong>관련 법령에 따른 보존기간</strong>
+                <p>- 계약 또는 청약철회 등에 관한 기록: 5년 (전자상거래법)</p>
+                <p>- 소비자 불만 또는 분쟁처리에 관한 기록: 3년 (전자상거래법)</p>
+                <p>- 접속에 관한 기록: 3개월 (통신비밀보호법)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 제3자 제공 -->
+    <div class="section">
+        <p class="section-title">3. 개인정보의 제3자 제공</p>
+        <div class="section-body">
+            <p>몽유록은 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 다만, 아래의 경우에는 예외로 합니다.</p>
+            <ul>
+                <li>- 이용자가 사전에 동의한 경우</li>
+                <li>- 법령의 규정에 의거하거나, 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 4. 처리 위탁 -->
+    <div class="section">
+        <p class="section-title">4. 개인정보처리의 위탁</p>
+        <div class="section-body">
+            <p>몽유록은 서비스 향상을 위하여 아래와 같이 개인정보 처리를 위탁할 수 있으며, 관계 법령에 따라 개인정보가 안전하게 관리될 수 있도록 필요한 사항을 규정합니다.</p>
+            <div class="highlight-box">
+                <strong>AI 서비스 운영 관련</strong>
+                <p>- 수탁업체: OpenAI 등 AI 모델 제공사</p>
+                <p>- 위탁 목적: 생성형 AI 응답 생성 (대화, 이미지 등)</p>
+                <p>- 보유 및 이용기간: 위탁 계약 종료 시까지</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 정보주체 권리 -->
+    <div class="section">
+        <p class="section-title">5. 정보주체의 권리·의무 및 행사방법</p>
+        <div class="section-body">
+            <p>이용자는 개인정보 주체로서 다음과 같은 권리를 행사할 수 있습니다.</p>
+            <ul>
+                <li>- 개인정보 처리현황 조회 및 열람 요구</li>
+                <li>- 개인정보 처리 정지 요구</li>
+                <li>- 개인정보 삭제(탈퇴) 요구</li>
+                <li>- 개인정보 오류 정정 요구</li>
+            </ul>
+            <p style="margin-top:8px;">위 권리 행사는 서비스 내 설정 메뉴 또는 아래 개인정보 보호책임자에게 이메일로 요청하실 수 있으며, 회사는 지체 없이 처리하겠습니다.</p>
+        </div>
+    </div>
+
+    <!-- 6. 파기 -->
+    <div class="section">
+        <p class="section-title">6. 개인정보의 파기</p>
+        <div class="section-body">
+            <p>몽유록은 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.</p>
+            <ul>
+                <li>- 전자적 파일 형태의 정보: 복원이 불가능한 방법으로 영구 삭제</li>
+                <li>- 종이에 출력된 개인정보: 분쇄기로 분쇄하거나 소각</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 7. 쿠키 -->
+    <div class="section">
+        <p class="section-title">7. 쿠키(Cookie) 운용</p>
+        <div class="section-body">
+            <p>몽유록은 이용자에게 개별화된 서비스를 제공하기 위해 쿠키를 사용합니다. 이용자는 웹 브라우저의 옵션 설정을 통해 쿠키 수집을 거부하거나 삭제할 수 있습니다. 단, 쿠키 수집을 거부할 경우 일부 서비스 이용이 어려울 수 있습니다.</p>
+        </div>
+    </div>
+
+    <!-- 8. 책임자 -->
+    <div class="section">
+        <p class="section-title">8. 개인정보 보호책임자</p>
+        <div class="section-body">
+            <p>몽유록은 개인정보 처리에 관한 업무를 총괄해서 책임지고, 정보주체의 불만처리 및 피해구제를 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.</p>
+            <div class="officer-card">
+                <p><span>성명</span>류지지</p>
+                <p><span>직책</span>대표</p>
+                <p><span>이메일</span>info@mongyurok.com</p>
+                <p><span>주소</span>서울특별시 서초구 강남대로1길 100, 100층 몽유록</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. 방침 변경 -->
+    <div class="section">
+        <p class="section-title">9. 개인정보처리방침의 변경</p>
+        <div class="section-body">
+            <p>이 개인정보처리방침은 법령·정책 또는 보안 기술의 변경에 따라 내용의 추가·삭제 및 수정이 있을 시에는 변경사항의 시행 최소 7일 전부터 서비스 내 공지사항을 통해 고지할 것입니다.</p>
+        </div>
+    </div>
+
+    <!-- 시행일 -->
+    <div class="effective-date">
+        <strong>시행일</strong>
+        <p>본 개인정보처리방침은 2026년 3월 11일부터 시행됩니다.</p>
+        <p>공고일자: 2026년 3월 8일</p>
+    </div>
+
+</div>
+{% endblock %}

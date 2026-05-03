@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}마이페이지{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/users/mypage.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/users/pwd_change.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mypage-page">
+    <h1 class="mypage-title">마이페이지</h1>
+
+    <div class="mypage-card">
+        <aside class="mypage-side-menu">
+            <a href="{% url 'users:mypage' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/pwd_setting.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>프로필 관리</span>
+            </a>
+
+            <a href="{% url 'users:pwd_change' %}" class="mypage-side-item active">
+                <img
+                    src="{% static 'images/users/pwd_key.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>비밀번호 수정</span>
+            </a>
+
+            <a href="{% url 'users:delete_account' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/pwd_out.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>회원탈퇴</span>
+            </a>
+        </aside>
+
+        <div class="mypage-vertical-line"></div>
+
+        <section class="mypage-profile">
+            <h2 class="profile-title pwd-title">비밀번호 수정</h2>
+            <div class="profile-title-line"></div>
+
+            <form class="pwd-change-form" method="post" id="pwdChangeForm">
+                {% csrf_token %}
+
+                <div class="pwd-area">
+                    <label for="current_password" class="profile-label">현재 비밀번호</label>
+                    <input
+                        type="password"
+                        id="current_password"
+                        name="current_password"
+                        class="pwd-input"
+                        placeholder="현재 비밀번호를 입력해주세요"
+                    >
+
+                    {% if current_password_error %}
+                        <p class="mypage-error-current-pwd error">{{ current_password_error }}</p>
+                    {% else %}
+                        <p class="mypage-error-current-pwd" id="currentPasswordMessage"></p>
+                    {% endif %}
+                </div>
+
+                <div class="pwd-area">
+                    <label for="new_password" class="profile-label">새 비밀번호</label>
+                    <input
+                        type="password"
+                        id="new_password"
+                        name="new_password"
+                        class="pwd-input"
+                        placeholder="변경할 비밀번호를 입력해주세요"
+                    >
+
+                    {% if new_password_error %}
+                        <p class="mypage-error-new-pwd error">{{ new_password_error }}</p>
+                    {% else %}
+                        <p class="mypage-error-new-pwd" id="newPasswordMessage"></p>
+                    {% endif %}
+                </div>
+
+                <div class="pwd-area">
+                    <label for="new_password_confirm" class="profile-label">비밀번호 확인</label>
+                    <input
+                        type="password"
+                        id="new_password_confirm"
+                        name="new_password_confirm"
+                        class="pwd-input"
+                        placeholder="변경할 비밀번호를 재입력해주세요"
+                    >
+
+                    {% if confirm_password_error %}
+                        <p class="mypage-error-confirm-pwd error">{{ confirm_password_error }}</p>
+                    {% else %}
+                        <p class="mypage-error-confirm-pwd" id="confirmPasswordMessage"></p>
+                    {% endif %}
+                </div>
+
+                <button
+                    type="submit"
+                    class="pwd-change-btn disabled"
+                    id="pwdChangeBtn"
+                    disabled
+                >
+                    수정
+                </button>
+            </form>
+
+            <img
+                src="{% static 'images/users/bamboo.png' %}"
+                alt=""
+                class="mypage-bamboo"
+            >
+        </section>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentPasswordInput = document.getElementById("current_password");
+        const newPasswordInput = document.getElementById("new_password");
+        const confirmPasswordInput = document.getElementById("new_password_confirm");
+        const pwdChangeBtn = document.getElementById("pwdChangeBtn");
+
+        const currentPasswordMessage = document.getElementById("currentPasswordMessage");
+        const newPasswordMessage = document.getElementById("newPasswordMessage");
+        const confirmPasswordMessage = document.getElementById("confirmPasswordMessage");
+
+        if (!currentPasswordInput || !newPasswordInput || !confirmPasswordInput || !pwdChangeBtn) return;
+
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d.*\d)(?=.*[!@#$%^&*?~])[A-Za-z\d!@#$%^&*?~]{8,16}$/;
+
+        function setError(element, text) {
+            if (!element) return;
+            element.textContent = text;
+            element.classList.add("error");
+        }
+
+        function clearError(element) {
+            if (!element) return;
+            element.textContent = "";
+            element.classList.remove("error");
+        }
+
+        function validatePasswordForm() {
+            const currentPassword = currentPasswordInput.value.trim();
+            const newPassword = newPasswordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
+
+            clearError(currentPasswordMessage);
+            clearError(newPasswordMessage);
+            clearError(confirmPasswordMessage);
+
+            let isValid = true;
+
+            if (newPassword.length > 0 && !passwordRegex.test(newPassword)) {
+                setError(newPasswordMessage, "비밀번호 형식이 올바르지 않습니다.");
+                isValid = false;
+            }
+
+            if (confirmPassword.length > 0 && newPassword !== confirmPassword) {
+                setError(confirmPasswordMessage, "비밀번호가 일치하지 않습니다.");
+                isValid = false;
+            }
+
+            if (
+                currentPassword.length === 0 ||
+                newPassword.length === 0 ||
+                confirmPassword.length === 0
+            ) {
+                isValid = false;
+            }
+
+            if (isValid) {
+                pwdChangeBtn.disabled = false;
+                pwdChangeBtn.classList.remove("disabled");
+            } else {
+                pwdChangeBtn.disabled = true;
+                pwdChangeBtn.classList.add("disabled");
+            }
+        }
+
+        currentPasswordInput.addEventListener("input", validatePasswordForm);
+        newPasswordInput.addEventListener("input", validatePasswordForm);
+        confirmPasswordInput.addEventListener("input", validatePasswordForm);
+
+        validatePasswordForm();
+    });
+</script>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

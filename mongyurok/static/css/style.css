@@ -1,0 +1,126 @@
+.logo {
+    font-size: 30px;
+}
+
+/* 2. header */
+.header {
+    display: flex;
+    justify-content: space-between;  /* 좌우 분리 */
+    align-items: center;
+
+    background: black;
+    color: white;
+    padding: 10px 20px;
+}
+
+/* 독대 모드, 스토리 모드, 이미지 전체와 logo와의 거리 */
+.header-left {
+    display:flex;
+    align-items: center;
+    gap: 50px;
+}
+
+/* 독대 모드, 스토리 모드, 이미지 각각의 사이 거리 */
+.nav {
+    display: flex;
+    gap: 15px;
+}
+
+/* 오른쪽 검색과 마이페이지 */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 박스 전체에 대한 설정 */
+.search-box {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid white;
+}
+
+/* 검색 박스 내부의 설정 */
+.search-box input {
+    flex: 1;
+    padding: 5px 0;
+
+    border: none;
+    background: transparent;
+    color: white;
+    outline: none;
+}
+
+/* 돋보기 아이콘 설정 */
+.search-icon {
+    margin-left: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+}
+
+.header a {
+    color: white;
+    text-decoration: none;
+}
+
+/* 3. 배너(수정하기) */
+.banner {
+    background: lightgray;
+    width: 900px;
+    height: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 4. 카드 섹션 */
+.card-section {
+    padding: 20px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 5. 카드 리스트 */
+.card-list {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+/* 6. 카드 */
+.card {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* 7. 버튼 */
+button {
+    padding: 8px 12px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #333;
+}

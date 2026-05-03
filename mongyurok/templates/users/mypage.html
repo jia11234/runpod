@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}마이페이지{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/users/mypage.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mypage-page">
+    <h1 class="mypage-title">마이페이지</h1>
+
+    <div class="mypage-card">
+
+        <aside class="mypage-side-menu">
+            <a href="{% url 'users:mypage' %}" class="mypage-side-item active">
+                <img
+                    src="{% static 'images/users/setting.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>프로필 관리</span>
+            </a>
+
+            <a href="{% url 'users:pwd_change' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/key.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>비밀번호 수정</span>
+            </a>
+
+            <a href="{% url 'users:delete_account' %}" class="mypage-side-item">
+                <img
+                    src="{% static 'images/users/out.png' %}"
+                    alt=""
+                    class="side-icon"
+                >
+                <span>회원탈퇴</span>
+            </a>
+        </aside>
+
+        <div class="mypage-vertical-line"></div>
+
+        <section class="mypage-profile">
+            <h2 class="profile-title">프로필 관리</h2>
+            <div class="profile-title-line"></div>
+
+            <div class="profile-image-area">
+                <p class="profile-label">프로필 이미지</p>
+
+                <form method="post" enctype="multipart/form-data" class="profile-image-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="profile_image">
+
+                    <div class="profile-image-content">
+                        {% if request.user.img_url %}
+                            <img
+                                src="{{ request.user.img_url.url }}"
+                                alt="프로필 이미지"
+                                class="profile-img"
+                            >
+                        {% else %}
+                            <img
+                                src="{% static 'images/users/profile.png' %}"
+                                alt="기본 프로필 이미지"
+                                class="profile-img"
+                            >
+                        {% endif %}
+
+                        <div class="profile-image-text-box">
+                            <p class="profile-desc">나를 대표하는 이미지를 업로드 해주세요!</p>
+
+                            <input
+                                type="file"
+                                id="profile_image"
+                                name="profile_image"
+                                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                                class="profile-file-input"
+                                onchange="this.form.submit()"
+                            >
+
+                            <label for="profile_image" class="profile-small-btn">
+                                수정
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="nickname-area">
+                <label for="nickname" class="profile-label">닉네임</label>
+                <p class="nickname-guide">2~12자 이내로 입력해 주세요 (특수문자, 이모지 제외)</p>
+
+                <form method="post" class="nickname-form" id="nicknameForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="nickname">
+
+                    <div class="nickname-input-row">
+                        <input
+                            type="text"
+                            id="nickname"
+                            name="nickname"
+                            class="nickname-input"
+                            value=""
+                            placeholder="변경할 닉네임을 입력해주세요"
+                            maxlength="12"
+                            data-current-nickname="{{ request.user.nickname }}"
+                        >
+                        <button
+                            type="submit"
+                            class="nickname-btn disabled"
+                            id="nicknameSubmitBtn"
+                            disabled
+                        >
+                            수정
+                        </button>
+                    </div>
+
+                    {% if nickname_error %}
+                        <p class="mypage-error-nickname error">{{ nickname_error }}</p>
+                    {% else %}
+                        <p class="mypage-error-nickname" id="nicknameMessage"></p>
+                    {% endif %}
+                </form>
+            </div>
+
+            <img
+                src="{% static 'images/users/bamboo.png' %}"
+                alt=""
+                class="mypage-bamboo"
+            >
+        </section>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nicknameInput = document.getElementById("nickname");
+        const nicknameBtn = document.getElementById("nicknameSubmitBtn");
+        const nicknameMessage = document.getElementById("nicknameMessage");
+
+        if (!nicknameInput || !nicknameBtn) return;
+
+        const currentNickname = nicknameInput.dataset.currentNickname;
+        const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,12}$/;
+
+        function setNicknameMessage(text, type) {
+            if (!nicknameMessage) return;
+
+            nicknameMessage.textContent = text;
+            nicknameMessage.classList.remove("error", "success");
+
+            if (type) {
+                nicknameMessage.classList.add(type);
+            }
+        }
+
+        function clearNicknameMessage() {
+            if (!nicknameMessage) return;
+
+            nicknameMessage.textContent = "";
+            nicknameMessage.classList.remove("error", "success");
+        }
+
+        function validateNickname() {
+            const value = nicknameInput.value.trim();
+
+            nicknameBtn.disabled = true;
+            nicknameBtn.classList.add("disabled");
+            clearNicknameMessage();
+
+            if (value.length === 0) {
+                return;
+            }
+
+            if (!nicknameRegex.test(value)) {
+                setNicknameMessage("올바른 닉네임 형식이 아닙니다. 다시 입력해 주세요.", "error");
+                return;
+            }
+
+            if (value === currentNickname) {
+                setNicknameMessage("기존 닉네임과 동일합니다. 다시 입력해 주세요.", "error");
+                return;
+            }
+
+            setNicknameMessage("사용 가능한 닉네임 입니다.", "success");
+
+            nicknameBtn.disabled = false;
+            nicknameBtn.classList.remove("disabled");
+        }
+
+        nicknameInput.addEventListener("input", validateNickname);
+        validateNickname();
+    });
+</script>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

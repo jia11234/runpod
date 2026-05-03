@@ -1,0 +1,89 @@
+   .doc-body {
+        padding: 60px 50px 100px;
+        max-width: 860px;
+        width: 100%;
+    }
+
+    .doc-brand {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .doc-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    .doc-intro {
+        font-size: 15px;
+        color: #848484;
+        margin-bottom: 48px;
+        line-height: 1.7;
+    }
+
+    .chapter-divider {
+        border: none;
+        border-top: 1.5px solid #1E2121;
+        margin: 40px 0 24px;
+    }
+
+    .chapter-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #848484;
+        margin-bottom: 20px;
+        letter-spacing: 0.03em;
+    }
+
+    .article {
+        margin-bottom: 28px;
+    }
+
+    .article-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1E2121;
+    }
+
+    .article-body {
+        font-size: 15px;
+        line-height: 1.85;
+        color: #3a3a3a;
+    }
+
+    .article-body p {
+        margin-bottom: 5px;
+    }
+
+    .sub-list {
+        padding-left: 20px;
+        margin: 6px 0;
+    }
+
+    .sub-list li {
+        list-style: none;
+        margin-bottom: 4px;
+        font-size: 15px;
+        line-height: 1.8;
+        color: #3a3a3a;
+    }
+
+    .addendum {
+        margin-top: 48px;
+        padding: 22px 24px;
+        background: #f5f0e8;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #848484;
+        line-height: 1.85;
+    }
+
+    .addendum-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1E2121;
+        margin-bottom: 10px;
+    }

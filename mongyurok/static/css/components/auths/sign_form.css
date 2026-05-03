@@ -1,0 +1,369 @@
+.signup-page {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    background-color: #FFF8F0;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding-top: 98px;
+    margin-bottom: 139px;
+}
+
+.signup-box {
+    width: 450px;
+}
+
+.signup-title {
+    width: 100%;
+
+    margin: 0 0 36px 0;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38px;
+    color: #1E2121;
+    text-align: center;
+}
+
+.signup-form {
+    width: 450px;
+}
+
+.required-guide {
+    width: 277px;
+    height: 19px;
+
+    margin: 0 0 14px 0;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #1E2121;
+}
+
+.required-guide span,
+.signup-field label span {
+    color: #E90101;
+}
+
+.signup-field {
+    width: 450px;
+    height: 90px;
+    margin-bottom: 14px;
+}
+
+.signup-field label {
+    display: block;
+
+    height: 19px;
+    margin-bottom: 10px;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #1E2121;
+}
+
+.email-row {
+    width: 450px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.email-id-input {
+    width: 171px;
+    height: 40px;
+}
+
+.email-at {
+    width: 14px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #1E2121;
+}
+
+.email-domain-select {
+    width: 125px;
+    height: 40px;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding: 0 16px;
+
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23848484' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    background-size: 16px 16px;
+
+    color: #848484;
+}
+
+.email-domain-select option {
+    color: #848484;
+    background-color: #FCFEFD;
+}
+
+.code-row {
+    width: 450px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.code-input {
+    width: 330px;
+    height: 40px;
+}
+
+.signup-input {
+    width: 450px;
+    height: 40px;
+}
+
+.email-id-input,
+.email-domain-select,
+.code-input,
+.signup-input {
+    border: 1px solid #BFBFBF;
+    border-radius: 5px;
+    background-color: rgba(253, 252, 248, 0.3);
+
+    box-sizing: border-box;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1E2121;
+
+    outline: none;
+}
+
+.email-id-input,
+.code-input,
+.signup-input {
+    padding: 0 16px;
+}
+
+.email-id-input::placeholder,
+.code-input::placeholder,
+.signup-input::placeholder {
+    color: #848484;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.send-code-button {
+    width: 110px;
+    height: 40px;
+
+    border: 1px solid #848484;
+    border-radius: 5px;
+    background-color: #848484;
+
+    font-family: 'Pretendard', sans-serif;
+    color: #FFF8F0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.check-code-button {
+    width: 110px;
+    height: 40px;
+
+    border: 1px solid #848484;
+    border-radius: 5px;
+    background-color: #848484;
+
+    font-family: 'Pretendard', sans-serif;
+    color: #FFF8F0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.send-code-button.active, .check-code-button.active{
+    border: 1px solid #315057;
+    background-color: #315057;
+}
+
+.profile-field {
+    width: 450px;
+    margin-bottom: 40px;
+}
+
+.profile-title {
+    width: 82px;
+    height: 19px;
+
+    margin: 0 0 10px 0;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #1E2121;
+}
+
+.profile-row {
+    width: 450px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.profile-preview {
+    width: 105px;
+    height: 105px;
+
+    flex-shrink: 0;
+}
+
+.profile-image {
+    width: 105px;
+    height: 105px;
+
+    display: block;
+    object-fit: cover;
+}
+
+.profile-upload {
+    padding-top: 13px;
+}
+
+.profile-upload p:nth-child(1) {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #1E2121;
+    margin-bottom: 5px;
+}
+
+.profile-upload-button {
+    width: 110px;
+    height: 40px;
+
+    margin-top: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #315057;
+    border-radius: 5px;
+    background-color: #FFF8F0;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #315057;
+
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.profile-file-input {
+    display: none;
+}
+
+.signup-submit-button {
+    width: 450px;
+    height: 54px;
+
+    border: none;
+    border-radius: 5px;
+    background-color: #848484;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #FDFCF8;
+
+    cursor: pointer;
+}
+
+.signup-submit-button.active {
+    background-color: #315057;
+}
+
+.login-guide {
+    margin: 14px 0 0 0;
+
+    text-align: center;
+
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #848484;
+}
+
+.login-guide a {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #315057;
+    text-decoration: none;
+}
+
+.signup-error-email, .signup-error-code, .signup-error-pwd, .signup-error-pwd-c, .signup-error-profile{
+    color: #FDFCF8;
+    white-space: pre-line;
+}
+
+.signup-error-email.error, .signup-error-code.error, .signup-error-pwd.error, .signup-error-pwd-c.error, .signup-error-nickname.error {
+    margin-top: 5px;
+    color: #E90101;
+    font-weight: 400;
+}
+
+.signup-error-profile.error {
+    color: #E90101;
+}
+.signup-error-email.success, .signup-error-code.success, .signup-error-pwd.success, .signup-error-pwd-c.success, .signup-error-nickname.success {
+    margin-top: 5px;
+    color: #315057;
+}
+
+.code-row div {
+    position: relative;
+}
+
+.timer{
+    position: absolute;
+    right: 14px;
+    bottom: 10px;
+}

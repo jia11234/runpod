@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}채팅방{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/character/chat-room.css' %}">
+<style>
+    /* 모달 기본 스타일 */
+    .modal-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;
+    }
+    .modal-content {
+        background: #fdfaf4; padding: 30px; border-radius: 12px; width: 450px; color: #333;
+    }
+    .modal-content input, .modal-content select, .modal-content textarea {
+        width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 1. 페르소나 설정 모달 -->
+<div id="persona-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 style="text-align: center; margin-bottom: 20px;">페르소나 설정</h2>
+        <label>성격</label>
+        <input type="text" id="p-personality" placeholder="예: 모든 행동에 민감하게 반응하는 성격">
+        
+        <label>신분</label>
+        <select id="p-identity">
+            <option value="farmer">농부</option>
+            <option value="scholar">유생</option>
+            <option value="official">관료</option>
+            <option value="general">장수</option>
+            <option value="merchant">상인</option>
+            <option value="physician">의원</option>
+            <option value="eunuch">내관</option>
+        </select>
+
+        <label>가치관</label>
+        <textarea id="p-values" placeholder="예: 밥 먹는 것이 최고고 모든 문제는 밥으로 해결 가능하다." style="height: 80px;"></textarea>
+
+        <label>최초 상황</label>
+        <textarea id="p-scene" placeholder="예: 밥 먹다가 왕에게 갑자기 호출됐다." style="height: 80px;"></textarea>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button onclick="history.back()" style="flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer;">취소</button>
+            <button id="persona-submit-btn" style="flex: 2; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer;">적용하기</button>
+        </div>
+    </div>
+</div>
+
+<section class="char-room-group">
+    <!-- 1. 메시지 영역 -->
+    <div class="char-room-message">
+        {% csrf_token %}
+        <div class="ai-notice">
+            <p>답변은 모두 AI가 생성한 내용이에요</p>
+        </div>
+
+        {% for msg in messages %}
+            {% if msg.type == "character" %}
+                {% include 'characters/components/char-box.html' %}
+            {% elif msg.type == "situation" %}
+                {% include 'characters/components/situ-box.html' %}
+            {% elif msg.type == "user" %}
+                {% include 'characters/components/user-box.html' %}
+            {% endif %}
+        {% endfor %}
+        
+        <div class="input-wrapper">
+            <div class="input-container">
+                <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." maxlength="300">
+                <button id="send-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="black"/>
+                        <rect x="9" y="9" width="6" height="6" fill="white"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="char-count"><span id="current-count">0</span>/300자</div>
+        </div>
+    </div>
+
+    <!-- 2. 프로필 영역 -->
+    <div class="char-room-profile">
+        <div class="char-room-profile-img"><img src="{{ room.character.img_url.url }}" alt=""></div>
+        <div>{{ room.character.kor_name }}({{ room.character.hanja_name }})</div>
+        <div class="user-info">
+            <img src="{{ user.img_url.url }}" alt="">
+            <div>
+                <p>이름</p>
+                <p>{{user.nickname}}</p>
+            </div>
+            <p>신분</p>
+            <p id="profile-identity">{{ room.persona.get_identity_display }}</p>
+            <p>성격</p>
+            <p id="profile-personality">{{ room.persona.personality }}</p>
+            <p>가치관</p>
+            <p id="profile-values">{{ room.persona.values }}</p>
+        </div>
+    </div>
+</section>
+
+<script>
+// 메시지 추가 함수 (전역)
+function appendMessage(container, type, content, nickname, imgUrl) {
+    const msgDiv = document.createElement('div');
+    
+    if (type === 'user') {
+        msgDiv.className = 'chat-item user-msg-group';
+        msgDiv.innerHTML = `
+            <div class="msg-content-box">
+                <p class="nickname">${nickname}</p>
+                <div class="bubble">${content}</div>
+            </div>
+            <div class="char-img-wrap"><img src="${imgUrl}" alt="user"></div>
+        `;
+    } else if (type === 'character' || type === 'CHARACTER') {
+        msgDiv.className = 'chat-item char-msg-group';
+        msgDiv.innerHTML = `
+            <div class="char-img-wrap"><img src="${imgUrl}" alt="char"></div>
+            <div class="msg-content-box">
+                <p class="nickname">${nickname}</p>
+                <div class="bubble">${content}</div>
+            </div>
+        `;
+    } else if (type === 'situation') {
+        msgDiv.className = 'situ-box';
+        msgDiv.innerHTML = `<div class="content">${content}</div>`;
+    }
+
+    const inputWrapper = document.querySelector('.input-wrapper');
+    if (inputWrapper) {
+        container.insertBefore(msgDiv, inputWrapper);
+    } else {
+        container.appendChild(msgDiv);
+    }
+    container.scrollTop = container.scrollHeight;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const messageContainer = document.querySelector('.char-room-message');
+    const sendBtn = document.getElementById('send-btn');
+    const chatInput = document.getElementById('chat-input');
+    const personaModal = document.getElementById('persona-modal');
+    const personaSubmitBtn = document.getElementById('persona-submit-btn');
+
+    const userNickname = "{{ user.nickname }}";
+    const userImageUrl = "{{ user.img_url.url }}";
+    const characterName = "{{ room.character.kor_name }}";
+    const charImageUrl = "{{ room.character.img_url.url }}";
+
+    // 1. 모달 체크 로직
+    const hasPersona = "{{ room.persona }}";
+    if (!hasPersona || hasPersona === "None") {
+        personaModal.style.display = 'flex';
+    }
+
+    // 2. 페르소나 제출 이벤트
+    personaSubmitBtn.addEventListener('click', async () => {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const formData = new URLSearchParams();
+        formData.append('personality', document.getElementById('p-personality').value);
+        formData.append('identity', document.getElementById('p-identity').value);
+        formData.append('values', document.getElementById('p-values').value);
+        formData.append('first_scene', document.getElementById('p-scene').value);
+
+        try {
+            const response = await fetch("{% url 'characters:persona_setting' room.character.id %}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': csrftoken },
+                body: formData
+            });
+            const data = await response.json();
+            if (data.status === 'success') window.location.href = data.room_url;
+        } catch (e) { console.error(e); }
+    });
+
+    // 3. 메시지 전송 이벤트
+    sendBtn.addEventListener('click', async () => {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        appendMessage(messageContainer, 'user', message, userNickname, userImageUrl);
+        chatInput.value = '';
+        document.getElementById('current-count').textContent = '0';
+
+        try {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const response = await fetch("{% url 'characters:send_message' room.id %}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': csrftoken },
+                body: new URLSearchParams({ 'message': message })
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                appendMessage(messageContainer, 'character', data.character_message.content, characterName, charImageUrl);
+            }
+        } catch (e) { console.error(e); }
+    });
+
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
+    chatInput.addEventListener('input', () => { document.getElementById('current-count').textContent = chatInput.value.length; });
+});
+</script>
+{% endblock %}

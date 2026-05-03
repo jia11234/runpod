@@ -1,0 +1,108 @@
+.card-container .char-card {
+    cursor: pointer;
+    transition: transform 0.18s ease;
+}
+.card-container .char-card:hover {
+    transform: translateY(-4px);
+}
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 500;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 60px 20px;
+}
+.modal-backdrop.open { display: flex; }
+.char-modal {
+    background: #1a1a1a;
+    color: #FFF8F0;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #FFF8F0;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    padding: 0;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+.modal-close-btn:hover { opacity: 1; }
+.modal-char-banner {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+}
+.modal-char-banner-placeholder {
+    width: 100%;
+    height: 260px;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 14px;
+}
+.modal-body { padding: 24px 22px 30px; }
+.modal-char-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.modal-char-period {
+    font-size: 13px;
+    color: #848484;
+    margin-bottom: 14px;
+}
+.modal-char-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+.modal-keyword-tag {
+    font-size: 12px;
+    color: #c8c0b0;
+    background: #2a2a2a;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+.modal-char-summary {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #c8c0b0;
+    margin-bottom: 28px;
+}
+.modal-start-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #FFF8F0;
+    color: #1E2121;
+    font-size: 15px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.modal-start-btn:hover { background: #e0d8cc; }
+.modal-start-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
